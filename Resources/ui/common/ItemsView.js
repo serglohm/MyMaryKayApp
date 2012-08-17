@@ -32,27 +32,37 @@ function ItemsView(_params) {
 				itemID: _rowdata.iid,
 				className: 'itemRowDp',
 				hasChild: true,
-				height: '135dp'
+				height: '100dp'
 		});
 	
 		var titleLabel = Ti.UI.createLabel({
 			text: _rowdata.cname,
 			itemID: _rowdata.iid,			
-			top: '10dp', left: '10dp', right: '10dp',
+			top: '10dp', left: '90dp', right: '10dp',
+			bottom: '10dp',
 			font: {fontSize: '15dp', fontWeight: 'bold', fontFamily: 'Arial'},
 			color: "#333"			
 		});
 		newRow.add(titleLabel);
-
+		/*
 		var annotationLabel = Ti.UI.createLabel({	
 			font: {fontSize: '15dp', fontFamily: 'Arial'},
 			color: "#555",
-			top: '40dp', left: '10dp', right: '10dp', bottom: '10dp',
+			top: '40dp', left: '90dp', right: '10dp', bottom: '10dp',
 			text: _rowdata.annotation,
 			itemID: _rowdata.iid
 		});
 		newRow.add(annotationLabel);
-			
+		*/
+		var img = Ti.UI.createImageView({
+			center: '50dp', left: '10dp',
+			width: 70,
+			itemID: _rowdata.iid,
+			image: 'http://www.mymarykay.ru/' + _rowdata.img
+		});
+		img.defaultImage = '/images/mary_kay.png';
+		newRow.add(img);
+		
 		_data.push(newRow);
 		itemsData[_rowdata.iid + ""] = _rowdata;
 	};	

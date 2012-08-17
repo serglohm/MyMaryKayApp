@@ -26,7 +26,7 @@ function ItemView(_params) {
 		text: '',	
 		top: '10dp',	
 		left: '10dp', right: '10dp',
-		font: {fontSize: '20dp', fontWeight: 'bold', fontFamily: 'Arial'},
+		font: {fontSize: '15dp', fontWeight: 'bold', fontFamily: 'Arial'},
 		color: '#FF1170'		
 	});
 	view.add(titleLabel);
@@ -57,7 +57,7 @@ function ItemView(_params) {
 	var buttonsView = Ti.UI.createView({
       left: 0, top: 0,
       width: Ti.UI.SIZE,
-      height: '40dp'
+      height: '60dp'
     });
 	
 	var cartButton = Ti.UI.createButton({	
@@ -69,7 +69,7 @@ function ItemView(_params) {
 		title: 'Добавить в корзину'
 	});
 	cartButton.addEventListener('click', function(e){
-		mdb.addItemToCart(itemID, itemData.cname);
+		mdb.addItemToCart(itemID, itemData.cname, itemData.thumb);
 		cartButton.title = 'В корзину (' + mdb.getItemCountInCart(itemID) + ')';
 	});
 
@@ -82,7 +82,7 @@ function ItemView(_params) {
 		title: 'F'
 	});	
 	favouriteButton.addEventListener('click', function(e){
-		mdb.addItemToFavourites(itemID, itemData.cname);
+		mdb.addItemToFavourites(itemID, itemData.cname, itemData.thumb);
 		cartButton.title = 'В корзину (' + mdb.getItemCountInCart(itemID) + ')';
 	});	
 	

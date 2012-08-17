@@ -44,13 +44,18 @@ function ApplicationWindow(_params) {
 			
 			navGroup.open(tempWindow);
 		} else if(e.data == 'favourites') {
-			var tempView = new FavouritesView({engine: engine, mdb: mdb});		
+			var tempView;
+			tempView = new FavouritesView({engine: engine, mdb: mdb});		
+	
 			var tempWindow = Ti.UI.createWindow({
 				title: e.name
 			});	
 			var tempContainerView = Ti.UI.createView({layout: "vertical"});
 			tempContainerView.add(tempView);
 			tempWindow.add(tempContainerView);
+			
+			navGroup.open(tempWindow);
+		
 		} else {
 			categoryContainerWindow.title = e.name;
 			navGroup.open(categoryContainerWindow);
