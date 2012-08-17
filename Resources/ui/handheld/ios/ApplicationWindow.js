@@ -2,6 +2,7 @@ function ApplicationWindow(_params) {
 	var MasterView = require('ui/common/MasterView'),
 		CategoryView = require('ui/common/CategoryView'),
 		CartView = require('ui/common/CartView'),
+		FavouritesView = require('ui/common/FavouritesView'),
 		ItemsView = require('ui/common/ItemsView'),
 		ItemView = require('ui/common/ItemView');
 		
@@ -42,6 +43,14 @@ function ApplicationWindow(_params) {
 			tempWindow.add(tempContainerView);
 			
 			navGroup.open(tempWindow);
+		} else if(e.data == 'favourites') {
+			var tempView = new FavouritesView({engine: engine, mdb: mdb});		
+			var tempWindow = Ti.UI.createWindow({
+				title: e.name
+			});	
+			var tempContainerView = Ti.UI.createView({layout: "vertical"});
+			tempContainerView.add(tempView);
+			tempWindow.add(tempContainerView);
 		} else {
 			categoryContainerWindow.title = e.name;
 			navGroup.open(categoryContainerWindow);

@@ -56,8 +56,8 @@ function ItemView(_params) {
 
 	var buttonsView = Ti.UI.createView({
       left: 0, top: 0,
-      height: 'auto',
-      width: Ti.UI.SIZE
+      width: Ti.UI.SIZE,
+      height: '40dp'
     });
 	
 	var cartButton = Ti.UI.createButton({	
@@ -100,6 +100,7 @@ function ItemView(_params) {
 	});
 	view.add(descriptionLabel);
 	
+	
     
     var spaceView = Ti.UI.createView({
       right: 0, left: 0,
@@ -108,6 +109,7 @@ function ItemView(_params) {
     view.add(spaceView);	
 	
 	self.setItemData = function(data){
+		Ti.API.log(data);
 		itemData = data;
 		annotaionLabel.text = data.annotation;
 		descriptionLabel.text = data.description;
