@@ -15,7 +15,10 @@ function MDb(){
     db.execute("CREATE TABLE IF NOT EXISTS cart_items (id INTEGER PRIMARY KEY AUTOINCREMENT, \
                                                                             iid INTEGER, \
                                                                             cnt INTEGER)");
-    db.execute("CREATE TABLE IF NOT EXISTS goods (iid INTEGER PRIMARY KEY, \
+    db.execute("CREATE TABLE IF NOT EXISTS favourite_items (id INTEGER PRIMARY KEY AUTOINCREMENT, \
+                                                                            iid INTEGER, \
+                                                                            cnt INTEGER)");
+	db.execute("CREATE TABLE IF NOT EXISTS goods (iid INTEGER PRIMARY KEY, \
                                                                 cname TEXT)");
 	
 	db.close();
@@ -28,6 +31,22 @@ function MDb(){
 
 MDb.prototype.open = function(itemId) {
 	this.db = Ti.Database.open('MyMaryKayDb');
+};
+
+MDb.prototype.addItemToFavourites = function(itemId, name) {
+	this.open();
+    var query = this.db.execute("SELECT cnt FROM favourite_items where iid = ?", [itemId]);
+    if (query.rowCount == 0){      
+        this.db.execute("INSERT INTO favourite_items (iid, cnt) VALUES (?, 1)", [itemId]);
+    }
+    query.close();
+    var gquery = this.db.execute("SELECT cname FROM goods where iid = ?", [itemId]);
+    if (gquery.rowCount == 0){
+        this.db.execute("INSERT INTO goods (iid, cname) VALUES (?, ?)", [itemId, name]);
+    }
+    gquery.close();
+
+	this.db.close();
 };
 
 MDb.prototype.addItemToCart = function(itemId, name) {
@@ -49,6 +68,23 @@ MDb.prototype.addItemToCart = function(itemId, name) {
 	this.db.close();
 };
 
+MDb.prototype.getItemsFromFavourites = function() {
+    this.open();
+	var model = [];
+    var rows = this.db.execute("SELECT i.iid as iid, i.cnt as cnt, g.cname as cname FROM favourite_items i, goods g where g.iid=i.iid");
+	while (rows.isValidRow()){
+		var rowData = {};
+        rowData.cname = rows.fieldByName('cname');
+        rowData.iid = rows.fieldByName('iid');	
+		
+        model.push(rowData);
+        rows.next();
+    }
+	rows.close();
+
+    this.db.close();
+    return model;
+};
 
 MDb.prototype.getItemsFromCart = function() {
     this.open();

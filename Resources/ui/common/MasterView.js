@@ -10,7 +10,8 @@ function MasterView() {
 		{title:'Спецпредложения', data:'special', hasChild:true, color: '#000'},
 		{title:'Каталог', data:'catalog', hasChild:true, color: '#000'},
 		{title:'Корзина', data:'cart', hasChild:true, color: '#000'},
-		{title:'История заказов', data:'history', hasChild:true, color: '#000'}
+		{title:'История заказов', data:'history', hasChild:true, color: '#000'},
+		{title:'Избранное', data:'favourites', hasChild:true, color: '#000'}
 	];
 	
 	var table = Ti.UI.createTableView({

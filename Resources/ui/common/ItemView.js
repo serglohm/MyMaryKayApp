@@ -34,6 +34,7 @@ function ItemView(_params) {
 	var imgView = Ti.UI.createImageView({
 		left: '10dp', right: '10dp'
 	});	
+	imgView.defaultImage = '/images/mary_kay.png';
 	view.add(imgView);
 
 	var priceLabel = Ti.UI.createLabel({	
@@ -52,21 +53,43 @@ function ItemView(_params) {
 	});
 	view.add(annotaionLabel);
 
+
+	var buttonsView = Ti.UI.createView({
+      left: 0, top: 0,
+      height: 'auto',
+      width: Ti.UI.SIZE
+    });
+	
 	var cartButton = Ti.UI.createButton({	
 		font: {fontSize: '20dp', fontFamily: 'Arial'},
 		top: '10dp',
-		left: '10dp', right: '10dp',
+		left: '10dp', right: '70dp',
 		//backgroundColor : '',
 		color: '#FF1170',
 		title: 'Добавить в корзину'
 	});
-	view.add(cartButton);
 	cartButton.addEventListener('click', function(e){
-		
 		mdb.addItemToCart(itemID, itemData.cname);
-		
 		cartButton.title = 'В корзину (' + mdb.getItemCountInCart(itemID) + ')';
 	});
+
+	var favouriteButton = Ti.UI.createButton({	
+		font: {fontSize: '20dp', fontFamily: 'Arial'},
+		top: '10dp',
+		width: '50dp', right: '10dp',
+		//backgroundColor : '',
+		color: '#FF1170',
+		title: 'F'
+	});	
+	favouriteButton.addEventListener('click', function(e){
+		mdb.addItemToFavourites(itemID, itemData.cname);
+		cartButton.title = 'В корзину (' + mdb.getItemCountInCart(itemID) + ')';
+	});	
+	
+	buttonsView.add(cartButton);
+	buttonsView.add(favouriteButton);
+	view.add(buttonsView);
+	
 
 	var descriptionLabel = Ti.UI.createLabel({	
 		font: {fontSize: '15dp', fontFamily: 'Arial'},
