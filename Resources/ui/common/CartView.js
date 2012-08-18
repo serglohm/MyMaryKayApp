@@ -11,8 +11,8 @@ function CartView(_params) {
 	});
 	
 	var table = Ti.UI.createTableView({
-		top: '0dp',
-		bottom: '0dp',
+		top: '0dp', left: 0,
+		bottom: '60dp',
 		data: tableData
 	});
 	//table.separatorColor = 'transparent';
@@ -72,7 +72,25 @@ function CartView(_params) {
 	}
 	table.setData(tempData);
 	
+	var buttonsView = Ti.UI.createView({
+      left: 0, bottom: 0,
+      width: Ti.UI.SIZE,
+      height: '65dp'
+    });
 	
+	var orderButton = Ti.UI.createButton({	
+		font: {fontSize: '20dp', fontFamily: 'Arial'},
+		top: '10dp', bottom: '15dp',
+		left: '10dp', right: '10dp',
+		//backgroundColor : '',
+		color: '#FF1170',
+		title: 'Оформить заказ'
+	});
+	orderButton.addEventListener('click', function(e){
+	
+	});
+	buttonsView.add(orderButton);
+	self.add(buttonsView);	
 
 	
 	return self;
