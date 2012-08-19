@@ -1,8 +1,35 @@
 function MDb(){
 	var db = Ti.Database.open('MyMaryKayDb');
 	
+	var DB_VERSION = 2.02;
 	
-	db.execute("DROP TABLE  orders");
+	db.execute("CREATE TABLE IF NOT EXISTS app_settings (sname VARCHAR(100) PRIMARY KEY, svalue TEXT)");
+	
+	var delete_flag = false;
+	var query = db.execute("SELECT svalue FROM app_settings WHERE sname='DB_VERSION'");
+    if (query.rowCount == 0){      
+        delete_flag = true;
+        db.execute("INSERT INTO app_settings (sname, svalue) VALUES (?, ?)", ['DB_VERSION', DB_VERSION]);
+    } else {
+    	var result = query.fieldByName('svalue');
+    	Ti.API.log('current DBVersion = ' + result)
+    	if (parseFloat(result) < DB_VERSION){
+    		delete_flag = true;
+    		db.execute("UPDATE app_settings SET svalue=? WHERE sname='DB_VERSION'", [DB_VERSION]);
+    	}	
+    }
+    query.close();
+	
+	if(delete_flag){
+		Ti.API.log('DROP TABLES');
+		db.execute("DROP TABLE  favourite_items");                                                        
+	    db.execute("DROP TABLE  goods");
+		db.execute("DROP TABLE  orders");
+		db.execute("DROP TABLE  cart_items");
+		db.execute("DROP TABLE  order_items");
+	}
+	
+	
     db.execute("CREATE TABLE IF NOT EXISTS orders (id INTEGER PRIMARY KEY AUTOINCREMENT, \
                                                                     order_number INTEGER, \
                                                                     order_time NUMERIC, \
@@ -18,13 +45,13 @@ function MDb(){
                                                                             cnt INTEGER)");
                                                                             
     db.execute("CREATE TABLE IF NOT EXISTS cart_items (id INTEGER PRIMARY KEY AUTOINCREMENT, \
-                                                                            iid INTEGER)")
-    db.execute("drop TABLE  favourite_items");                                                        
+                                                                            iid INTEGER, \
+                                                                            cnt INTEGER)");
                                                                             
     db.execute("CREATE TABLE IF NOT EXISTS favourite_items (id INTEGER PRIMARY KEY AUTOINCREMENT, \
                                                                             iid INTEGER)");
     
-    db.execute("drop TABLE  goods");
+    
                                                                             
 	db.execute("CREATE TABLE IF NOT EXISTS goods (iid INTEGER PRIMARY KEY, \
 																thumb TEXT, \

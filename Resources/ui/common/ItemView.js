@@ -58,7 +58,7 @@ function ItemView(_params) {
 		color: "#FF1170",
 		top: '10dp',
 		left: '10dp', right: '10dp',
-		text: 'В коризне ' + 0 + ' шт.'
+		text: 'В корзине ' + 0 + ' шт.'
 	});
 	view.add(cartCountLabel);
 	
@@ -80,7 +80,7 @@ function ItemView(_params) {
 		mdb.addItemToCart(itemID, itemData.cname, itemData.thumb);
 
 		var cnt = mdb.getItemCountInCart(itemID);
-		cartCountLabel.text = 'В коризне ' + cnt + ' шт.';
+		cartCountLabel.text = 'В корзине ' + cnt + ' шт.';
 		if(cnt){cartCountLabel.show();} else {cartCountLabel.hide();}
 
 		Ti.App.fireEvent('app:addItemToCart', {data: "0"});
@@ -130,7 +130,7 @@ function ItemView(_params) {
 		titleLabel.text = data.cname;
 
 		var cnt = mdb.getItemCountInCart(itemID);
-		cartCountLabel.text = 'В Коризне ' + cnt + ' шт.';
+		cartCountLabel.text = 'В корзине ' + cnt + ' шт.';
 		if(cnt){cartCountLabel.show();} else {cartCountLabel.hide();}
 		 
 		cartButton.title = 'В корзину';

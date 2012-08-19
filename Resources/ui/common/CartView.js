@@ -17,7 +17,7 @@ function CartView(_params) {
 		bottom: '60dp',
 		data: tableData
 	});
-	table.backgroundImage = '/iphone/Default.png'
+	//table.backgroundImage = '/iphone/Default.png'
 	table.separatorColor = 'transparent';
 	table.color = 'transparent';
 	self.add(table);
