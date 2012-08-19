@@ -13,18 +13,23 @@ function TabApplicationWindow(_params){
 	var engine = _params.engine;	
 	var mdb = _params.mdb;
 	
-	var self = Titanium.UI.createTabGroup({id:'tabGroup1'});
+	var self = Titanium.UI.createTabGroup({
+			id:'tabGroup1',
+			barColor: '#B5CDF8'
+		});
 	
 
 	var masterView = new MasterView(),
 		categoryView = new CategoryView({engine: _params.engine, categoryID: 0});
 		
 	var masterContainerWindow = Ti.UI.createWindow({
+		barColor: '#FF1170',
 		title: 'MyMaryKay'
 	});
 	masterContainerWindow.add(masterView);
 	
 	var categoryContainerWindow = Ti.UI.createWindow({
+		barColor: '#FF1170',
 		title: 'Product Details'
 	});
 	categoryContainerWindow.add(categoryView);
@@ -39,6 +44,7 @@ function TabApplicationWindow(_params){
 			tempView = new FavouritesView({engine: engine, mdb: mdb});		
 	
 			var tempWindow = Ti.UI.createWindow({
+				barColor: '#FF1170',
 				title: e.name
 			});	
 			var tempContainerView = Ti.UI.createView({layout: "vertical"});
@@ -61,8 +67,10 @@ function TabApplicationWindow(_params){
 	var cartView = new CartView({engine: engine, mdb: mdb});	
 	
 	var cartWindow = Ti.UI.createWindow({
-		title: 'Корзина'
+		title: 'Корзина',
+		barColor: '#FF1170'
 	});	
+	
 	var cartContainerView = Ti.UI.createView({layout: "vertical"});
 	cartContainerView.add(cartView);
 	cartWindow.add(cartContainerView);
@@ -72,6 +80,8 @@ function TabApplicationWindow(_params){
 		titleid: 'Корзина',
 		window: cartWindow
 	});
+
+	cartTab
 
 	var cartCnt = mdb.cartItemsCount();
 	if (cartCnt > 0){
@@ -86,6 +96,7 @@ function TabApplicationWindow(_params){
 
 	var favouritesView = new FavouritesView({engine: engine, mdb: mdb});		
 	var favouritesWindow = Ti.UI.createWindow({
+		barColor: '#FF1170',
 		title: 'Избранное'
 	});	
 	var favouritesContainerView = Ti.UI.createView({layout: "vertical"});
@@ -101,6 +112,7 @@ function TabApplicationWindow(_params){
 
 	var historyView = new HistoryView({engine: engine, mdb: mdb});		
 	var historyWindow = Ti.UI.createWindow({
+		barColor: '#FF1170',
 		title: 'Заказы'
 	});	
 	var historyContainerView = Ti.UI.createView({layout: "vertical"});
@@ -145,6 +157,7 @@ function TabApplicationWindow(_params){
 	Ti.App.addEventListener('app:selectItem', function(e) {
 		var tempView = new ItemView({engine: engine, mdb: mdb, itemID: e.data[0]});			
 		var tempWindow = Ti.UI.createWindow({
+			barColor: '#FF1170',
 			title: e.data[1].cname
 		});	
 		var tempContainerView = Ti.UI.createView({layout: "vertical"});
@@ -162,6 +175,7 @@ function TabApplicationWindow(_params){
 		}
 	
 		var tempWindow = Ti.UI.createWindow({
+			barColor: '#FF1170',
 			title: e.data[1].cname
 		});	
 		var tempContainerView = Ti.UI.createView({layout: "vertical"});
@@ -175,6 +189,7 @@ function TabApplicationWindow(_params){
 		var tempView = new OrderView({engine: engine, mdb: mdb});
 
 		var tempWindow = Ti.UI.createWindow({
+			barColor: '#FF1170',
 			title: 'Заказ'
 		});	
 		var tempContainerView = Ti.UI.createView({layout: "vertical"});
@@ -193,6 +208,7 @@ function TabApplicationWindow(_params){
 	Ti.App.addEventListener('app:selectOrder', function(e){		
 		var tempView = new HistoryItemsView({engine: engine, mdb: mdb, orderID: e.data[0]});			
 		var tempWindow = Ti.UI.createWindow({
+			barColor: '#FF1170',
 			title: 'Заказ №' + e.data[0]
 		});	
 		var tempContainerView = Ti.UI.createView({layout: "vertical"});
@@ -206,6 +222,7 @@ function TabApplicationWindow(_params){
 	Ti.App.addEventListener('app:selectAdvItem', function(e) {
 		var tempView = new ItemView({engine: engine, mdb: mdb, itemID: e.data[0]});			
 		var tempWindow = Ti.UI.createWindow({
+			barColor: '#FF1170',
 			title: e.data[1].cname
 		});	
 		var tempContainerView = Ti.UI.createView({layout: "vertical"});

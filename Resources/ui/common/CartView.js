@@ -1,5 +1,7 @@
 function CartView(_params) {
-	var self = Ti.UI.createView();
+	var self = Ti.UI.createView({
+		color: '#FF1170'
+	});
 	var engine = _params.engine;
 	var mdb = _params.mdb;
 	var itemsData = {};
@@ -15,7 +17,9 @@ function CartView(_params) {
 		bottom: '60dp',
 		data: tableData
 	});
-	//table.separatorColor = 'transparent';
+	table.backgroundImage = '/iphone/Default.png'
+	table.separatorColor = 'transparent';
+	table.color = 'transparent';
 	self.add(table);
 	
 	table.addEventListener('click', function(e) {
@@ -31,7 +35,10 @@ function CartView(_params) {
 		var newRow = Ti.UI.createTableViewRow({
 				itemID: _rowdata.iid,
 				className: 'cartRow',
+				color: 'transparent',
+				top: 10,
 				height: '70dp'
+				
 		});
 	
 		var titleLabel = Ti.UI.createLabel({

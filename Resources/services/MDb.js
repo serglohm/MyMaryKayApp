@@ -2,7 +2,7 @@ function MDb(){
 	var db = Ti.Database.open('MyMaryKayDb');
 	
 	
-	//db.execute("DROP TABLE  orders");
+	db.execute("DROP TABLE  orders");
     db.execute("CREATE TABLE IF NOT EXISTS orders (id INTEGER PRIMARY KEY AUTOINCREMENT, \
                                                                     order_number INTEGER, \
                                                                     order_time NUMERIC, \
@@ -19,12 +19,12 @@ function MDb(){
                                                                             
     db.execute("CREATE TABLE IF NOT EXISTS cart_items (id INTEGER PRIMARY KEY AUTOINCREMENT, \
                                                                             iid INTEGER)")
-    //db.execute("drop TABLE  favourite_items");                                                        
+    db.execute("drop TABLE  favourite_items");                                                        
                                                                             
     db.execute("CREATE TABLE IF NOT EXISTS favourite_items (id INTEGER PRIMARY KEY AUTOINCREMENT, \
                                                                             iid INTEGER)");
     
-    //db.execute("drop TABLE  goods");
+    db.execute("drop TABLE  goods");
                                                                             
 	db.execute("CREATE TABLE IF NOT EXISTS goods (iid INTEGER PRIMARY KEY, \
 																thumb TEXT, \
