@@ -38,7 +38,7 @@ function ItemsView(_params) {
 		var titleLabel = Ti.UI.createLabel({
 			text: _rowdata.cname,
 			itemID: _rowdata.iid,			
-			top: '10dp', left: '90dp', right: '10dp',
+			top: '10dp', left: '80dp', right: '10dp',
 			bottom: '10dp',
 			font: {fontSize: '15dp', fontWeight: 'bold', fontFamily: 'Arial'},
 			color: "#333"			
@@ -55,8 +55,8 @@ function ItemsView(_params) {
 		newRow.add(annotationLabel);
 		*/
 		var img = Ti.UI.createImageView({
-			center: '50dp', left: '10dp',
-			width: 70,
+			center: '50dp', left: '5dp',
+			width: '70dp',
 			itemID: _rowdata.iid,
 			image: 'http://www.mymarykay.ru/' + _rowdata.img
 		});

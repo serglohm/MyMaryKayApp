@@ -22,13 +22,16 @@ MEngine.prototype.getData = function(uri, callback){
         }                      
     };                  
     xhr.send();
-}
+};
 
-MEngine.prototype.postData = function(uri, params, callback){    
+MEngine.prototype.postRawData = function(uri, params, callback){    
           
     var xhr = Titanium.Network.createHTTPClient();    
     xhr.onerror = function(e){
-    	Ti.API.log('onerror: ' + JSON.stringify(e));
+    	
+		Ti.API.log('error: ' + JSON.stringify(e));
+    	Ti.API.log(cmdUrl);
+		Ti.API.log(params);
    	};
      
     var cmdUrl = 'http://www.mymarykay.ru/' + uri; 
@@ -42,8 +45,13 @@ MEngine.prototype.postData = function(uri, params, callback){
             }            
         }                      
     };                  
-    xhr.send(JSON.stringify(params));
-}
+    xhr.send(params);
+};
+
+
+MEngine.prototype.postData = function(uri, params, callback){        
+    this.postRawData(uri, JSON.stringify(params), callback);
+};
 
 module.exports = MEngine; 
  

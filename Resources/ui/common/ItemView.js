@@ -53,16 +53,24 @@ function ItemView(_params) {
 	});
 	view.add(annotaionLabel);
 
-
+	var cartCountLabel = Ti.UI.createLabel({	
+		font: {fontSize: '15dp', fontFamily: 'Arial'},
+		color: "#FF1170",
+		top: '10dp',
+		left: '10dp', right: '10dp',
+		text: 'В коризне ' + 0 + ' шт.'
+	});
+	view.add(cartCountLabel);
+	
 	var buttonsView = Ti.UI.createView({
       left: 0, top: 0,
       width: Ti.UI.SIZE,
-      height: '60dp'
+      height: '50dp'
     });
 	
 	var cartButton = Ti.UI.createButton({	
 		font: {fontSize: '20dp', fontFamily: 'Arial'},
-		top: '10dp',
+		top: '0dp',
 		left: '10dp', right: '70dp',
 		//backgroundColor : '',
 		color: '#FF1170',
@@ -70,12 +78,17 @@ function ItemView(_params) {
 	});
 	cartButton.addEventListener('click', function(e){
 		mdb.addItemToCart(itemID, itemData.cname, itemData.thumb);
-		cartButton.title = 'В корзину (' + mdb.getItemCountInCart(itemID) + ')';
+
+		var cnt = mdb.getItemCountInCart(itemID);
+		cartCountLabel.text = 'В коризне ' + cnt + ' шт.';
+		if(cnt){cartCountLabel.show();} else {cartCountLabel.hide();}
+
+		Ti.App.fireEvent('app:addItemToCart', {data: "0"});
 	});
 
 	var favouriteButton = Ti.UI.createButton({	
 		font: {fontSize: '20dp', fontFamily: 'Arial'},
-		top: '10dp',
+		top: '0dp',
 		width: '50dp', right: '10dp',
 		//backgroundColor : '',
 		color: '#FF1170',
@@ -83,13 +96,14 @@ function ItemView(_params) {
 	});	
 	favouriteButton.addEventListener('click', function(e){
 		mdb.addItemToFavourites(itemID, itemData.cname, itemData.thumb);
-		cartButton.title = 'В корзину (' + mdb.getItemCountInCart(itemID) + ')';
+
+		Ti.App.fireEvent('app:addItemToFavourites', {data: "0"});
+		
 	});	
 	
 	buttonsView.add(cartButton);
 	buttonsView.add(favouriteButton);
-	view.add(buttonsView);
-	
+	view.add(buttonsView);	
 
 	var descriptionLabel = Ti.UI.createLabel({	
 		font: {fontSize: '15dp', fontFamily: 'Arial'},
@@ -114,7 +128,12 @@ function ItemView(_params) {
 		annotaionLabel.text = data.annotation;
 		descriptionLabel.text = data.description;
 		titleLabel.text = data.cname;
-		cartButton.title = 'В корзину (' + mdb.getItemCountInCart(itemID) + ')';
+
+		var cnt = mdb.getItemCountInCart(itemID);
+		cartCountLabel.text = 'В Коризне ' + cnt + ' шт.';
+		if(cnt){cartCountLabel.show();} else {cartCountLabel.hide();}
+		 
+		cartButton.title = 'В корзину';
 		priceLabel.text = 'Цена: ' + data.price + ' руб.';
 		imgView.image = 'http://www.mymarykay.ru/' + data.img;
 	};

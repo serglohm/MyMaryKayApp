@@ -1,8 +1,8 @@
-#appname: MyMaryKayApp
-#publisher: serglohm
-#url: http://mymarykayapp.filigranltd.com
-#image: appicon.png
-#appid: com.filigranltd.mymarykayapp
-#desc: undefined
-#type: ipad
-#guid: 282ba85c-5615-4476-a348-189a8d29bc9f
+#appname:MyMaryKayApp
+#publisher:serglohm
+#url:http://mymarykayapp.filigranltd.com
+#image:appicon.png
+#appid:com.filigranltd.mymarykayapp
+#desc:not specified
+#type:ipad
+#guid:282ba85c-5615-4476-a348-189a8d29bc9f

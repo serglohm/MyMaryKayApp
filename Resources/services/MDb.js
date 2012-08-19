@@ -1,12 +1,15 @@
 function MDb(){
 	var db = Ti.Database.open('MyMaryKayDb');
 	
+	
+	//db.execute("DROP TABLE  orders");
     db.execute("CREATE TABLE IF NOT EXISTS orders (id INTEGER PRIMARY KEY AUTOINCREMENT, \
                                                                     order_number INTEGER, \
-                                                                    order_time NUMERIC, amount NUMERIC, \
-                                                                    name TEXT, surname TEXT, second_name TEXT,\
+                                                                    order_time NUMERIC, \
+                                                                    amount NUMERIC, \
+                                                                    name TEXT, last_name TEXT, second_name TEXT,\
                                                                     phone TEXT, email TEXT, city TEXT, \
-                                                                    postindex TEXT, address TEXT \
+                                                                    zipindex TEXT, address TEXT \
                                                                     )");
                                                                     
     db.execute("CREATE TABLE IF NOT EXISTS order_items (id INTEGER PRIMARY KEY AUTOINCREMENT, \
@@ -52,6 +55,109 @@ MDb.prototype.addItemToFavourites = function(itemId, name, thumb) {
     }
     gquery.close();
 
+	this.db.close();
+};
+
+MDb.prototype.cartItemsCount = function() {
+	this.open();
+	var result = 0;
+    var query = this.db.execute("SELECT SUM(cnt) as cnt FROM cart_items");
+    if (query.rowCount > 0){
+        result = query.fieldByName('cnt');
+	}
+    query.close();	
+	this.db.close();
+
+	return result;
+};
+
+
+MDb.prototype.orders = function(){
+	    this.open();
+	var model = [];
+    var rows = this.db.execute("SELECT id, datetime(order_time) as order_time FROM orders ORDER BY id DESC");
+
+	while (rows.isValidRow()){
+		var rowData = {};
+        rowData.oid = rows.fieldByName('id');
+        rowData.order_time = rows.fieldByName('order_time');	
+		
+        model.push(rowData);
+        rows.next();
+    }
+	rows.close();
+
+    this.db.close();
+    return model;
+	
+};
+
+MDb.prototype.orderCart = function(order) {
+	this.open();
+	var sql = "INSERT INTO orders (order_time, last_name, name, second_name, phone, email, city, zipindex, address) values (datetime('now'), ?, ?, ?, ?, ?, ?, ?, ?)"; 
+	this.db.execute(sql, [order.contact_info.last_name, 
+					order.contact_info.first_name, 
+					order.contact_info.second_name, 
+					order.contact_info.phone, 
+					order.contact_info.email, 
+					order.contact_info.city, 
+					order.contact_info.zip, 
+					order.contact_info.address]);
+	var order_id = this.db.getLastInsertRowId(); 
+	
+	for(var i = 0; i < order.goods.length; i++){
+		this.db.execute("INSERT INTO order_items (oid, iid, cnt) values (?, ?, ?)", [order_id, order.goods[i].id, order.goods[i].count]);
+	}
+	
+    var query = this.db.execute("DELETE FROM cart_items"); 
+	this.db.close();
+	return order_id; 
+};
+
+MDb.prototype.itemsFromOrder = function(oid) {
+    this.open();
+	var model = [];
+    var rows = this.db.execute("SELECT i.oid as oid, i.iid as iid, i.cnt as cnt, g.thumb as thumb, g.cname as cname FROM order_items i, goods g where g.iid=i.iid AND i.oid=?", [oid]);
+
+	while (rows.isValidRow()){
+		var rowData = {};
+        rowData.cname = rows.fieldByName('cname');
+        rowData.thumb = rows.fieldByName('thumb');
+        rowData.oid = rows.fieldByName('oid');
+        rowData.iid = rows.fieldByName('iid');
+        rowData.cnt = rows.fieldByName('cnt');		
+		
+        model.push(rowData);
+        rows.next();
+    }
+	rows.close();
+
+    this.db.close();
+    return model;
+};
+
+
+MDb.prototype.deleteFromCart = function(itemId) {
+	var result = 0;
+	this.open();
+    var query = this.db.execute("SELECT cnt FROM cart_items where iid = ?", [itemId]);
+    if (query.rowCount > 0){
+        result = query.fieldByName('cnt');
+        --result;
+        if(result > 0){
+        	this.db.execute("UPDATE cart_items SET cnt=? WHERE iid = ?", [result, itemId]);
+        } else {
+        	this.db.execute("DELETE FROM cart_items WHERE iid = ?", [itemId]);
+        }
+    }
+    query.close();
+   	this.db.close();
+	return result;
+};
+
+MDb.prototype.deleteFromFavourites = function(itemID) {
+	this.open();
+    var query = this.db.execute("DELETE FROM favourite_items where iid=?", [itemID]); 
 	this.db.close();
 };
 

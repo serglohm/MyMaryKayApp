@@ -1,7 +1,8 @@
-function FavouritesView(_params) {
+function HistoryItemsView(_params) {
 	var self = Ti.UI.createView();
 	var engine = _params.engine;
 	var mdb = _params.mdb;
+	var orderID = _params.orderID;
 	var itemsData = {};
 
 	var tableData = [];
@@ -22,7 +23,7 @@ function FavouritesView(_params) {
 		if(e.source.noClicked){
 	
 		} else { 
-			Ti.App.fireEvent('app:selectAdvItem', {data: [e.source.itemID, itemsData[e.source.itemID], 'favourites']});
+			Ti.App.fireEvent('app:selectAdvItem', {data: [e.source.itemID, itemsData[e.source.itemID], 'history']});
 		}
 	});	
 	
@@ -49,32 +50,18 @@ function FavouritesView(_params) {
 			image: 'http://www.mymarykay.ru/' + _rowdata.thumb
 		});
 		img.defaultImage = '/images/mary_kay.png';
-		newRow.add(img);	
+		newRow.add(img);
 		
-		var deleteView = Ti.UI.createView({
-			center: '50dp', right: '0dp', width: '55dp', height: '55dp',
-			noClicked: true,			
-			itemID: _rowdata.iid,	
-			backgroundColor: 'transparent'
+		var  countLabel = Ti.UI.createLabel({	
+			font: {fontSize: '15dp', fontFamily: 'Arial'},
+			color: '#FF1170',
+			top: '10dp', right: '5dp', bottom: '10dp',
+			width: '45dp',
+			text: _rowdata.cnt + ' шт.',
+			itemID: _rowdata.iid
 		});
-		var deleteImg = Ti.UI.createImageView({
-			left: '10dp', right: '10dp', width: '25dp', height: '25dp',
-			image: '/images/minus.png',
-			noClicked: true,
-			itemID: _rowdata.iid,			
-			checked: false
-		});
-		deleteView.addEventListener('click', function(e){
-			mdb.deleteFromFavourites(e.source.itemID);
-			table.deleteRow(e.index);
-			//self.updateFavouritesItems();
-		});
-		deleteView.add(deleteImg);
-		newRow.add(deleteView);
-				
-			
-		
-			
+		newRow.add(countLabel);			
+					
 		_data.push(newRow);
 		itemsData[_rowdata.iid + ""] = _rowdata;
 	};	
@@ -85,8 +72,8 @@ function FavouritesView(_params) {
 	};
 
 
-	self.updateFavouritesItems = function(){
-		var model = mdb.getItemsFromFavourites();
+	self.updateHistoryItems = function(){
+		var model = mdb.itemsFromOrder(orderID);
 		self.clearTable();
 		var tempData = [];
 		for(var i = 0; i < model.length; i++){
@@ -94,9 +81,15 @@ function FavouritesView(_params) {
 		}
 		table.setData(tempData);
 	};	
-	self.updateFavouritesItems();
+	self.updateHistoryItems();
+
+
+			
+
+	
+	
 	
 	return self;
 };
 
-module.exports = FavouritesView;
+module.exports = HistoryItemsView;
