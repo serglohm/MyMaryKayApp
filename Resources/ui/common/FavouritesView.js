@@ -1,5 +1,8 @@
 function FavouritesView(_params) {
-	var self = Ti.UI.createView();
+	var settings = _params.settings;
+	var self = Ti.UI.createView({
+		backgroundImage: settings.favouritesBackgroundImage
+	});
 	var engine = _params.engine;
 	var mdb = _params.mdb;
 	var itemsData = {};
@@ -15,7 +18,11 @@ function FavouritesView(_params) {
 		bottom: '0dp',
 		data: tableData
 	});
-	//table.separatorColor = 'transparent';
+	
+	table.backgroundColor = 'transparent';
+	table.separatorStyle = Ti.UI.iPhone.TableViewSeparatorStyle.NONE;
+	table.separatorColor = 'transparent';
+	
 	self.add(table);
 	
 	table.addEventListener('click', function(e) {
@@ -30,8 +37,17 @@ function FavouritesView(_params) {
 		var newRow = Ti.UI.createTableViewRow({
 				itemID: _rowdata.iid,
 				className: 'favouriteRow',
-				height: '100dp'
+				height: '100dp',
+				backgroundColor: 'transparent'
 		});
+		newRow.backgroundColor = 'transparent';
+		newRow.selectedBackgroundColor = 'transparent';
+	
+		var bckView = Ti.UI.createView({left: '5dp', top: '5dp', right: '5dp', bottom: '0dp',
+			backgroundColor: '#fff',	
+			itemID: _rowdata.iid,
+			borderRadius: 5
+		});		
 	
 		var titleLabel = Ti.UI.createLabel({
 			text: _rowdata.cname,
@@ -40,16 +56,16 @@ function FavouritesView(_params) {
 			font: {fontSize: '15dp', fontWeight: 'bold', fontFamily: 'Arial'},
 			color: "#333"			
 		});
-		newRow.add(titleLabel);
+		bckView.add(titleLabel);
 		
 		var img = Ti.UI.createImageView({
 			center: '50dp', left: '10dp',
 			width: 70,
 			itemID: _rowdata.iid,
-			image: 'http://www.mymarykay.ru/' + _rowdata.thumb
+			image: engine.getUrlStart() + '/' + _rowdata.thumb
 		});
-		img.defaultImage = '/images/mary_kay.png';
-		newRow.add(img);	
+		img.defaultImage = '/iphone/applelogo.png';
+		bckView.add(img);	
 		
 		var deleteView = Ti.UI.createView({
 			center: '50dp', right: '0dp', width: '55dp', height: '55dp',
@@ -70,10 +86,9 @@ function FavouritesView(_params) {
 			//self.updateFavouritesItems();
 		});
 		deleteView.add(deleteImg);
-		newRow.add(deleteView);
-				
-			
-		
+		bckView.add(deleteView);
+					
+		newRow.add(bckView);
 			
 		_data.push(newRow);
 		itemsData[_rowdata.iid + ""] = _rowdata;

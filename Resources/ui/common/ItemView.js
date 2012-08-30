@@ -1,5 +1,8 @@
 function ItemView(_params) {
-	var self = Ti.UI.createView();
+	var settings = _params.settings;
+	var self = Ti.UI.createView({
+		backgroundImage: settings.itemBackgroundImage
+	});
 	var engine = _params.engine;
 	var mdb = _params.mdb;
 	var itemID = _params.itemID;
@@ -12,14 +15,18 @@ function ItemView(_params) {
       showVerticalScrollIndicator: true,
       showHorizontalScrollIndicator: true,
     });
+  
+    scrollView.visible = false;
     self.add(scrollView);
     
     var view = Ti.UI.createView({
-      left: 0, top: 0,
+      left: '5dp', top: '5dp', right: '5dp', bottom: '5dp',
       height: Ti.UI.SIZE,
       width: 'auto',
       layout: 'vertical'
     });
+    view.backgroundColor = '#fff';
+    view.borderRadius = '5dp';
     scrollView.add(view);
 
 	var titleLabel = Ti.UI.createLabel({
@@ -27,19 +34,19 @@ function ItemView(_params) {
 		top: '10dp',	
 		left: '10dp', right: '10dp',
 		font: {fontSize: '15dp', fontWeight: 'bold', fontFamily: 'Arial'},
-		color: '#FF1170'		
+		color: '#555'		
 	});
 	view.add(titleLabel);
 
 	var imgView = Ti.UI.createImageView({
 		left: '10dp', right: '10dp'
 	});	
-	imgView.defaultImage = '/images/mary_kay.png';
+	imgView.defaultImage = '/iphone/applelogo.png';
 	view.add(imgView);
 
 	var priceLabel = Ti.UI.createLabel({	
 		font: {fontSize: '20dp', fontFamily: 'Arial'},
-		color: '#FF1170',
+		color: '#555',
 		left: '10dp', right: '10dp',
 		text: ''
 	});
@@ -55,7 +62,7 @@ function ItemView(_params) {
 
 	var cartCountLabel = Ti.UI.createLabel({	
 		font: {fontSize: '15dp', fontFamily: 'Arial'},
-		color: "#FF1170",
+		color: "#555",
 		top: '10dp',
 		left: '10dp', right: '10dp',
 		text: 'В корзине ' + 0 + ' шт.'
@@ -73,7 +80,7 @@ function ItemView(_params) {
 		top: '0dp',
 		left: '10dp', right: '70dp',
 		//backgroundColor : '',
-		color: '#FF1170',
+		color: '#555',
 		title: 'Добавить в корзину'
 	});
 	cartButton.addEventListener('click', function(e){
@@ -91,7 +98,7 @@ function ItemView(_params) {
 		top: '0dp',
 		width: '50dp', right: '10dp',
 		//backgroundColor : '',
-		color: '#FF1170',
+		color: '#555',
 		title: 'F'
 	});	
 	favouriteButton.addEventListener('click', function(e){
@@ -113,12 +120,11 @@ function ItemView(_params) {
 		text: ''
 	});
 	view.add(descriptionLabel);
-	
-	
-    
+
     var spaceView = Ti.UI.createView({
       right: 0, left: 0,
-      height: '20dp'
+      height: '20dp',
+      backgroundColor: '#fff'
     });
     view.add(spaceView);	
 	
@@ -135,13 +141,28 @@ function ItemView(_params) {
 		 
 		cartButton.title = 'В корзину';
 		priceLabel.text = 'Цена: ' + data.price + ' руб.';
-		imgView.image = 'http://www.mymarykay.ru/' + data.img;
+		imgView.image = engine.getUrlStart() + '/' + data.img;
 	};
 
 
 	self.itemCallback = function(data){
 		self.setItemData(data);
+		scrollView.show();
+		actInd.hide();
 	}	
+
+	var actInd = Titanium.UI.createActivityIndicator({
+		top: 10, 
+		height: 50,
+		width: 150
+	});
+	actInd.color = "#fff";
+	if (Ti.UI.iPhone) {
+		actInd.style = Titanium.UI.iPhone.ActivityIndicatorStyle.BIG;
+	}
+	actInd.show();
+	actInd.message = 'Загрузка...';
+	self.add(actInd);	
 	
 	engine.getData('/shop/m/item/' + itemID + '/', self.itemCallback);
 	

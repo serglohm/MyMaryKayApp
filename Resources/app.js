@@ -29,11 +29,13 @@ if (Ti.version < 1.8 ) {
 	
 	var MEngine = require('services/MEngine');
 	var MDb = require('services/MDb');
-	
+	var MSettings = require('services/MSettings');
 	
 	var gParams = {};
+	gParams.settings = new MSettings();
 	gParams.engine = new MEngine();	
-	gParams.mdb = new MDb();
+	gParams.mdb = new MDb({settings: gParams.settings});
+	
 	
 	var Window;
 	if (isTablet) {

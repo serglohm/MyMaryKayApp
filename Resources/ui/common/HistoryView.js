@@ -1,6 +1,8 @@
 function HistoryView(_params){
-	
-	var self = Ti.UI.createView();
+	var settings = _params.settings;
+	var self = Ti.UI.createView({
+		backgroundImage: settings.historyBackgroundImage
+	});
 
 	var engine = _params.engine;
 	var mdb = _params.mdb;
@@ -17,7 +19,9 @@ function HistoryView(_params){
 		bottom: '0dp',
 		data: tableData
 	});
-	//table.separatorColor = 'transparent';
+	table.backgroundColor = 'transparent';
+	table.separatorStyle = Ti.UI.iPhone.TableViewSeparatorStyle.NONE;
+	table.separatorColor = 'transparent';
 	self.add(table);
 	
 	table.addEventListener('click', function(e) {
@@ -32,8 +36,16 @@ function HistoryView(_params){
 		var newRow = Ti.UI.createTableViewRow({
 				itemID: _rowdata.oid,
 				className: 'favouriteRow',
-				height: '50dp'
+				height: '50dp',
+				backgroundColor: 'transparent'
 		});
+		newRow.selectedBackgroundColor = 'transparent';
+	
+		var bckView = Ti.UI.createView({left: '5dp', top: '5dp', right: '5dp', bottom: '0dp',
+			backgroundColor: '#fff',
+			itemID: _rowdata.oid,
+			borderRadius: 5
+		});	
 	
 		var titleLabel = Ti.UI.createLabel({
 			text: '№' + _rowdata.oid + ': ' + _rowdata.order_time,
@@ -42,8 +54,8 @@ function HistoryView(_params){
 			font: {fontSize: '15dp', fontWeight: 'bold', fontFamily: 'Arial'},
 			color: "#333"			
 		});
-		newRow.add(titleLabel);
-			
+		bckView.add(titleLabel);
+		newRow.add(bckView);	
 			
 		_data.push(newRow);
 		itemsData[_rowdata.oid + ""] = _rowdata;

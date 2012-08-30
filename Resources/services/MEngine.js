@@ -3,14 +3,23 @@ function MEngine(){
 	return this;
 }
 
-MEngine.prototype.getData = function(uri, callback){    
+MEngine.prototype.getUrlStart = function(){    
+	return "http://www.mymarykay.ru";
+};
+	
+MEngine.prototype.getData = function(uri, callback, errorcallback){    
           
     var xhr = Titanium.Network.createHTTPClient();    
     xhr.onerror = function(e){
+    	if(errorcallback){
+    		errorcallback(e);
+    	}
     	Ti.API.log('onerror: ' + JSON.stringify(e));
    	};
      
-    var cmdUrl = 'http://www.mymarykay.ru' + uri; 
+    var cmdUrl = this.getUrlStart() + uri;
+    
+    Ti.API.log("cmdUrl: " + cmdUrl); 
      
     xhr.open("GET", cmdUrl);         
     xhr.onload = function(){
@@ -24,17 +33,19 @@ MEngine.prototype.getData = function(uri, callback){
     xhr.send();
 };
 
-MEngine.prototype.postRawData = function(uri, params, callback){    
+MEngine.prototype.postRawData = function(uri, params, callback, errorcallback){    
           
     var xhr = Titanium.Network.createHTTPClient();    
     xhr.onerror = function(e){
-    	
+    	if(errorcallback){
+    		errorcallback(e);
+    	}
 		Ti.API.log('error: ' + JSON.stringify(e));
     	Ti.API.log(cmdUrl);
 		Ti.API.log(params);
    	};
      
-    var cmdUrl = 'http://www.mymarykay.ru/' + uri; 
+    var cmdUrl = this.getUrlStart() + uri; 
      
     xhr.open("POST", cmdUrl);         
     xhr.onload = function(){
@@ -49,8 +60,8 @@ MEngine.prototype.postRawData = function(uri, params, callback){
 };
 
 
-MEngine.prototype.postData = function(uri, params, callback){        
-    this.postRawData(uri, JSON.stringify(params), callback);
+MEngine.prototype.postData = function(uri, params, callback, errorcallback){        
+    this.postRawData(uri, JSON.stringify(params), callback, errorcallback);
 };
 
 module.exports = MEngine; 

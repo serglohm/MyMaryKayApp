@@ -1,5 +1,8 @@
 function HistoryItemsView(_params) {
-	var self = Ti.UI.createView();
+	var settings = _params.settings;
+	var self = Ti.UI.createView({
+		backgroundImage: settings.historyItemBackgroundImage
+	});
 	var engine = _params.engine;
 	var mdb = _params.mdb;
 	var orderID = _params.orderID;
@@ -16,7 +19,9 @@ function HistoryItemsView(_params) {
 		bottom: '0dp',
 		data: tableData
 	});
-	//table.separatorColor = 'transparent';
+	table.backgroundColor = 'transparent';
+	table.separatorStyle = Ti.UI.iPhone.TableViewSeparatorStyle.NONE;
+	table.separatorColor = 'transparent';
 	self.add(table);
 	
 	table.addEventListener('click', function(e) {
@@ -31,8 +36,16 @@ function HistoryItemsView(_params) {
 		var newRow = Ti.UI.createTableViewRow({
 				itemID: _rowdata.iid,
 				className: 'favouriteRow',
-				height: '100dp'
+				height: '100dp',
+				backgroundColor: 'transparent'
 		});
+		newRow.selectedBackgroundColor = 'transparent';
+	
+		var bckView = Ti.UI.createView({left: '5dp', top: '5dp', right: '5dp', bottom: '0dp',
+			backgroundColor: '#fff',
+			itemID: _rowdata.iid,
+			borderRadius: 5
+		});	
 	
 		var titleLabel = Ti.UI.createLabel({
 			text: _rowdata.cname,
@@ -41,7 +54,7 @@ function HistoryItemsView(_params) {
 			font: {fontSize: '15dp', fontWeight: 'bold', fontFamily: 'Arial'},
 			color: "#333"			
 		});
-		newRow.add(titleLabel);
+		bckView.add(titleLabel);
 		
 		var img = Ti.UI.createImageView({
 			center: '50dp', left: '10dp',
@@ -49,18 +62,20 @@ function HistoryItemsView(_params) {
 			itemID: _rowdata.iid,
 			image: 'http://www.mymarykay.ru/' + _rowdata.thumb
 		});
-		img.defaultImage = '/images/mary_kay.png';
-		newRow.add(img);
+		img.defaultImage = '/iphone/applelogo.png';
+		bckView.add(img);
 		
 		var  countLabel = Ti.UI.createLabel({	
 			font: {fontSize: '15dp', fontFamily: 'Arial'},
-			color: '#FF1170',
+			color: '#555',
 			top: '10dp', right: '5dp', bottom: '10dp',
 			width: '45dp',
 			text: _rowdata.cnt + ' шт.',
 			itemID: _rowdata.iid
 		});
-		newRow.add(countLabel);			
+		bckView.add(countLabel);			
+		
+		newRow.add(bckView);	
 					
 		_data.push(newRow);
 		itemsData[_rowdata.iid + ""] = _rowdata;

@@ -1,5 +1,8 @@
 function ItemsView(_params) {
-	var self = Ti.UI.createView();
+	var settings = _params.settings;
+	var self = Ti.UI.createView({
+		backgroundImage: settings.itemsBackgroundImage
+	});
 	var engine = _params.engine;
 	var categoryID = _params.categoryID;
 	var itemsData = {};
@@ -15,7 +18,9 @@ function ItemsView(_params) {
 		bottom: '0dp',
 		data: tableData
 	});
-	//table.separatorColor = 'transparent';
+	table.backgroundColor = 'transparent';
+	table.separatorStyle = Ti.UI.iPhone.TableViewSeparatorStyle.NONE;
+	table.separatorColor = 'transparent';
 	self.add(table);
 	
 	table.addEventListener('click', function(e) {
@@ -31,10 +36,16 @@ function ItemsView(_params) {
 		var newRow = Ti.UI.createTableViewRow({
 				itemID: _rowdata.iid,
 				className: 'itemRowDp',
-				hasChild: true,
 				height: '100dp'
 		});
+		newRow.backgroundColor = 'transparent';
 	
+		var bckView = Ti.UI.createView({left: '5dp', top: '5dp', right: '5dp', bottom: '0dp',
+			backgroundColor: '#fff',
+			itemID: _rowdata.iid,
+			borderRadius: '5dp'
+		});
+			
 		var titleLabel = Ti.UI.createLabel({
 			text: _rowdata.cname,
 			itemID: _rowdata.iid,			
@@ -43,7 +54,7 @@ function ItemsView(_params) {
 			font: {fontSize: '15dp', fontWeight: 'bold', fontFamily: 'Arial'},
 			color: "#333"			
 		});
-		newRow.add(titleLabel);
+		bckView.add(titleLabel);
 		/*
 		var annotationLabel = Ti.UI.createLabel({	
 			font: {fontSize: '15dp', fontFamily: 'Arial'},
@@ -58,10 +69,12 @@ function ItemsView(_params) {
 			center: '50dp', left: '5dp',
 			width: '70dp',
 			itemID: _rowdata.iid,
-			image: 'http://www.mymarykay.ru/' + _rowdata.img
+			image: engine.getUrlStart() + '/' + _rowdata.img
 		});
-		img.defaultImage = '/images/mary_kay.png';
-		newRow.add(img);
+		img.defaultImage = '/iphone/applelogo.png';
+		bckView.add(img);
+		
+		newRow.add(bckView);
 		
 		_data.push(newRow);
 		itemsData[_rowdata.iid + ""] = _rowdata;
@@ -79,9 +92,25 @@ function ItemsView(_params) {
 			self.addRowToTable(data[i], tempData);
 		}
 		table.setData(tempData);
+		actInd.hide();
 	}	
+
+	var actInd = Titanium.UI.createActivityIndicator({
+		top: 10, 
+		height: 50,
+		width: 150
+	});
+	actInd.color = "#fff";
+	if (Ti.UI.iPhone) {
+		actInd.style = Titanium.UI.iPhone.ActivityIndicatorStyle.BIG;
+	}
+	actInd.show();
+	actInd.message = 'Загрузка...';
+	self.add(actInd);	
 	
 	engine.getData('/shop/m/items/' + categoryID + '/', self.categoryCallback);
+	
+	
 	
 	return self;
 };

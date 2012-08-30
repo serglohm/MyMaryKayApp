@@ -1,5 +1,8 @@
 function CategoryView(_params) {
-	var self = Ti.UI.createView();
+	var settings = _params.settings;
+	var self = Ti.UI.createView({
+		backgroundImage: settings.categoryBackgroundImage
+	});
 	var engine = _params.engine;
 	var categoryID = _params.categoryID;
 	var categoryData = {};
@@ -15,7 +18,9 @@ function CategoryView(_params) {
 		bottom: '0dp',
 		data: tableData
 	});
-	//table.separatorColor = 'transparent';
+	table.backgroundColor = 'transparent';
+	table.separatorStyle = Ti.UI.iPhone.TableViewSeparatorStyle.NONE;
+	table.separatorColor = 'transparent';
 	self.add(table);
 	
 	table.addEventListener('click', function(e) {
@@ -31,9 +36,14 @@ function CategoryView(_params) {
 		var newRow = Ti.UI.createTableViewRow({
 				categoryID: _rowdata.cid,
 				className: 'categoryRowDesc',
-				height: '135dp',
-				hasChild: true
+				height: '135dp'
 		});
+		newRow.backgroundColor = 'transparent';
+
+		var bckView = Ti.UI.createView({left: 5, top: 5, right: 5, bottom: 0,
+				borderRadius: 5,
+				backgroundColor: '#fff'
+			});	
 	
 		var titleLabel = Ti.UI.createLabel({
 			text: _rowdata.cname,
@@ -42,7 +52,7 @@ function CategoryView(_params) {
 			font: {fontSize: '15dp', fontWeight: 'bold', fontFamily: 'Arial'},
 			color: "#333"			
 		});
-		newRow.add(titleLabel);
+		bckView.add(titleLabel);
 
 		var descriptionLabel = Ti.UI.createLabel({	
 			font: {fontSize: '15dp', fontFamily: 'Arial'},
@@ -51,7 +61,9 @@ function CategoryView(_params) {
 			text: _rowdata.description,
 			categoryID: _rowdata.cid
 		});
-		newRow.add(descriptionLabel);
+		bckView.add(descriptionLabel);
+		
+		newRow.add(bckView);	
 			
 		_data.push(newRow);
 		categoryData[_rowdata.cid + ""] = _rowdata;
@@ -61,9 +73,16 @@ function CategoryView(_params) {
 		var newRow = Ti.UI.createTableViewRow({
 				categoryID: _rowdata.cid,
 				className: 'categoryRowTitle',
-				height: '40dp',
-				hasChild: true
+				height: '50dp'
 		});
+		newRow.backgroundColor = 'transparent';
+		newRow.selectedBackgroundColor = 'transparent';
+
+		var bckView = Ti.UI.createView({left: 5, top: 5, right: 5, bottom: 0,
+				borderRadius: 5,
+				categoryID: _rowdata.cid,
+				backgroundColor: '#fff'
+			});		
 	
 		var titleLabel = Ti.UI.createLabel({
 			text: _rowdata.cname,
@@ -72,7 +91,8 @@ function CategoryView(_params) {
 			font: {fontSize: '15dp', fontWeight: 'bold', fontFamily: 'Arial'},
 			color: "#333"			
 		});
-		newRow.add(titleLabel);
+		bckView.add(titleLabel);
+		newRow.add(bckView);
 
 		_data.push(newRow);
 		categoryData[_rowdata.cid + ""] = _rowdata;
@@ -95,7 +115,21 @@ function CategoryView(_params) {
 			
 		}
 		table.setData(tempData);
+		actInd.hide();
 	}	
+
+	var actInd = Titanium.UI.createActivityIndicator({
+		top: 10, 
+		height: 50,
+		width: 150
+	});
+	actInd.color = "#fff";
+	if (Ti.UI.iPhone) {
+		actInd.style = Titanium.UI.iPhone.ActivityIndicatorStyle.BIG;
+	}
+	actInd.show();
+	actInd.message = 'Загрузка...';
+	self.add(actInd);	
 	
 	engine.getData('/shop/m/cat/' + categoryID + '/', self.categoryCallback);
 	

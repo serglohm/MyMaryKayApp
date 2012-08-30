@@ -1,7 +1,10 @@
-function MDb(){
-	var db = Ti.Database.open('MyMaryKayDb');
+function MDb(_params){
+	this.dbName = _params.settings.dbName;
+	var db = Ti.Database.open(this.dbName);
 	
-	var DB_VERSION = 2.02;
+	var DB_VERSION = 2.04;
+	
+	db.execute('BEGIN');
 	
 	db.execute("CREATE TABLE IF NOT EXISTS app_settings (sname VARCHAR(100) PRIMARY KEY, svalue TEXT)");
 	
@@ -22,11 +25,11 @@ function MDb(){
 	
 	if(delete_flag){
 		Ti.API.log('DROP TABLES');
-		db.execute("DROP TABLE  favourite_items");                                                        
-	    db.execute("DROP TABLE  goods");
-		db.execute("DROP TABLE  orders");
-		db.execute("DROP TABLE  cart_items");
-		db.execute("DROP TABLE  order_items");
+		db.execute("DROP TABLE IF EXISTS favourite_items");                                                        
+	    db.execute("DROP TABLE IF EXISTS goods");
+		db.execute("DROP TABLE IF EXISTS orders");
+		db.execute("DROP TABLE IF EXISTS cart_items");
+		db.execute("DROP TABLE IF EXISTS order_items");
 	}
 	
 	
@@ -57,6 +60,7 @@ function MDb(){
 																thumb TEXT, \
                                                                 cname TEXT)");
 	
+	db.execute('COMMIT');
 	db.close();
 	
 	
@@ -66,7 +70,7 @@ function MDb(){
 };
 
 MDb.prototype.open = function(itemId) {
-	this.db = Ti.Database.open('MyMaryKayDb');
+	this.db = Ti.Database.open(this.dbName);
 };
 
 MDb.prototype.addItemToFavourites = function(itemId, name, thumb) {
@@ -229,7 +233,7 @@ MDb.prototype.getItemsFromFavourites = function() {
 MDb.prototype.getItemsFromCart = function() {
     this.open();
 	var model = [];
-    var rows = this.db.execute("SELECT i.iid as iid, i.cnt as cnt, g.thumb as thumb, g.cname as cname FROM cart_items i, goods g where g.iid=i.iid");
+    var rows = this.db.execute("SELECT ci.iid as iid, ci.cnt as cnt, g.thumb as thumb, g.cname as cname FROM cart_items ci, goods g where g.iid=ci.iid");
 	while (rows.isValidRow()){
 		var rowData = {};
         rowData.cname = rows.fieldByName('cname');
