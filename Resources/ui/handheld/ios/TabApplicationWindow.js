@@ -34,7 +34,7 @@ function TabApplicationWindow(_params){
 		categoryView = new CategoryView({engine: _params.engine, categoryID: 0, settings: settings});
 		
 	var masterContainerWindow = self.createWindow({
-		title: settings.mainWindowTitle
+		//title: settings.mainWindowTitle
 	});
 	masterContainerWindow.add(masterView);
 	

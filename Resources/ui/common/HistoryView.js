@@ -41,7 +41,7 @@ function HistoryView(_params){
 		});
 		newRow.selectedBackgroundColor = 'transparent';
 	
-		var bckView = Ti.UI.createView({left: '5dp', top: '5dp', right: '5dp', bottom: '0dp',
+		var bckView = Ti.UI.createView({left: '5dp', top: '0dp', right: '5dp', bottom: '5dp',
 			backgroundColor: '#fff',
 			itemID: _rowdata.oid,
 			borderRadius: 5

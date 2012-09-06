@@ -21,13 +21,28 @@ function MasterView(_params) {
 	
 	self.add(table);
 	
+	self.createHeaderView = function(){
+		var headerView = Ti.UI.createView({
+			height: '69dp', left: 0, right: 0
+		});
+		//headerView.backgroundColor = '#0f0';
+		var headerImage = Ti.UI.createImageView({
+			image: '/iphone/logo.png',
+			top: '20dp', left: '10dp', width: '300dp', height: '59dp'
+		});
+		headerView.add(headerImage);
+		return headerView;
+		
+	};
+	
 	self.addRowToTable = function(_rowdata, _data){
 		var newRow = Ti.UI.createTableViewRow({
 				data: _rowdata.data,
 				className: 'itemRowDp',
-				height: '50dp'
+				height: '70dp'
 		});
 		newRow.backgroundColor = 'transparent';
+		newRow.selectedBackgroundColor = '#fff';
 	
 		var bckView = Ti.UI.createView({left: '5dp', top: '5dp', right: '5dp', bottom: '0dp',
 			backgroundColor: '#fff',
@@ -38,6 +53,7 @@ function MasterView(_params) {
 		var titleLabel = Ti.UI.createLabel({
 			text: _rowdata.title,
 			data: _rowdata.data,	
+						
 			top: '10dp', left: '10dp', right: '10dp',
 			bottom: '10dp',
 			font: {fontSize: '15dp', fontWeight: 'bold', fontFamily: 'Arial'},
@@ -53,7 +69,8 @@ function MasterView(_params) {
 	for(var i = 0; i < tableData.length; i++){
 		self.addRowToTable(tableData[i], tempData);
 	}
-	table.setData(tempData);	
+	table.setData(tempData);
+	table.headerView = self.createHeaderView();	
 
 	//add behavior
 	table.addEventListener('click', function(e) {

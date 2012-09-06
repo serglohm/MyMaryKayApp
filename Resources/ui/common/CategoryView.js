@@ -36,14 +36,21 @@ function CategoryView(_params) {
 		var newRow = Ti.UI.createTableViewRow({
 				categoryID: _rowdata.cid,
 				className: 'categoryRowDesc',
-				height: '135dp'
+				height: Ti.UI.SIZE
 		});
 		newRow.backgroundColor = 'transparent';
+		newRow.selectedBackgroundColor = '#fff';
 
-		var bckView = Ti.UI.createView({left: 5, top: 5, right: 5, bottom: 0,
+		var bckView = Ti.UI.createView({left: 5, right: 5, bottom: 5,
 				borderRadius: 5,
+				layout: 'vertical',
+				height: Ti.UI.SIZE,
 				backgroundColor: '#fff'
-			});	
+			});
+		
+		bckView.selectedBackgroundColor = '#fff';
+		bckView.backgroundSelectedColor = '#0f0';	
+		bckView.backgroundFocusedColor = '#f00';
 	
 		var titleLabel = Ti.UI.createLabel({
 			text: _rowdata.cname,
@@ -57,7 +64,7 @@ function CategoryView(_params) {
 		var descriptionLabel = Ti.UI.createLabel({	
 			font: {fontSize: '15dp', fontFamily: 'Arial'},
 			color: "#555",
-			top: '30dp', left: '10dp', right: '10dp', bottom: '10dp',
+			left: '10dp', right: '10dp', bottom: '10dp',
 			text: _rowdata.description,
 			categoryID: _rowdata.cid
 		});
@@ -73,12 +80,12 @@ function CategoryView(_params) {
 		var newRow = Ti.UI.createTableViewRow({
 				categoryID: _rowdata.cid,
 				className: 'categoryRowTitle',
-				height: '50dp'
+				height: '70dp'
 		});
 		newRow.backgroundColor = 'transparent';
-		newRow.selectedBackgroundColor = 'transparent';
+		newRow.selectedBackgroundColor = '#fff';
 
-		var bckView = Ti.UI.createView({left: 5, top: 5, right: 5, bottom: 0,
+		var bckView = Ti.UI.createView({left: 5, bottom: 5, right: 5,
 				borderRadius: 5,
 				categoryID: _rowdata.cid,
 				backgroundColor: '#fff'

@@ -54,7 +54,7 @@ function CartView(_params) {
 		newRow.backgroundColor = 'transparent';
 		newRow.selectedBackgroundColor = 'transparent';
 		
-		var bckView = Ti.UI.createView({left: 5, top: 5, right: 5, bottom: 0,
+		var bckView = Ti.UI.createView({left: 5, top: 0, right: 5, bottom: 5,
 				borderRadius: 5,
 				itemID: _rowdata.iid,
 				backgroundColor: '#fff'
