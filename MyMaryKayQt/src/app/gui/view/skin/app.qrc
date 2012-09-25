@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/layout">
+        <file alias="main.qml">layout/main.qml</file>
+        <file alias="CartPage.qml">layout/CartPage.qml</file>
+        <file alias="ItemPage.qml">layout/ItemPage.qml</file>
+        <file alias="ItemsPage.qml">layout/ItemsPage.qml</file>
+        <file alias="MainHeader.qml">layout/MainHeader.qml</file>
+        <file alias="MainPage.qml">layout/MainPage.qml</file>
+        <file alias="OrderPage.qml">layout/OrderPage.qml</file>
+        <file alias="code.js">layout/code.js</file>
+        <file alias="engine.js">layout/engine.js</file>
+        <file alias="myDB.js">layout/myDB.js</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file alias="logo.png">images/logo.png</file>
+    </qresource>
+</RCC>
